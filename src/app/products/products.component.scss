@@ -1,0 +1,94 @@
+.list_view {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  overflow: auto;
+  height:410px;
+}
+.list_view li {
+  cursor: pointer;
+  position: relative;
+  left: 0;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+}
+.list_view li.selected {
+  background-color: #CFD8DC;
+  color: white;
+}
+.list_view li.selected:hover {
+  background-color: #BBD8DC;
+  color: white;
+}
+.list_view .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color:#405061;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 1.8em;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+
+.content_img{
+  position: relative;
+  width: 150px;
+  height: 150px;
+  float: left;
+  margin-right: 10px;
+ }
+ 
+ /* Child Text Container */
+ .content_img div{
+  position: absolute;
+  bottom: 40%;
+  top: 15%;
+  left: 5%;
+  background: black;
+  color: white;
+  width: 50%;
+  height: 50%;
+  margin-bottom: 10px;
+  font-family: sans-serif;
+  opacity: 0.2;
+  visibility: hidden;
+ }
+ 
+ /* Hover on Parent Container */
+ .content_img:hover{
+  cursor: pointer;
+ }
+ 
+ .content_img:hover div{
+  width: 150px;
+  padding: 8px 15px;
+  visibility: visible;
+  opacity: 0.7; 
+ }
+
+ .button {
+  border: none;
+  color: white;
+  padding: 13px 80px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  border-radius: 2px;
+}
+
+.h_button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
