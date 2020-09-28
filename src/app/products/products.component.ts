@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-products',
@@ -10,8 +11,11 @@ export class ProductsComponent implements OnInit {
   imageurls: any[];
   addeditemlst: any[];
   subtotallist: any[];
+  recieptdialogRef: MatDialogRef<RecieptpopupComponent, any>;
 
-  constructor() { }
+  constructor(
+    public matDialog: MatDialog,
+  ) { }
 
   ngOnInit() {
     this.productdata = [
@@ -46,10 +50,10 @@ export class ProductsComponent implements OnInit {
     }
     this.imageurls = this.productdata;
     this.subtotallist = [
-      { 'title': 'SubTotal', 'value': '0.000 EUR', 'subtotal': '0 items'},
-      { 'title': 'VAT Tax', 'value': '10%', 'subtotal': '0.000 EUR'},
-      { 'title': 'Discount', 'value': '10%', 'subtotal': '0.000 EUR'},
-      { 'title': 'Total', 'value': '0.000 EUR', 'subtotal': ''}
+      { 'title': 'SubTotal', 'value': '0.000 EUR', 'subtotal': '0 items' },
+      { 'title': 'VAT Tax', 'value': '10%', 'subtotal': '0.000 EUR' },
+      { 'title': 'Discount', 'value': '10%', 'subtotal': '0.000 EUR' },
+      { 'title': 'Total', 'value': '0.000 EUR', 'subtotal': '' }
     ];
   }
 
@@ -57,6 +61,7 @@ export class ProductsComponent implements OnInit {
     this.addeditemlst.filter(x => x.name === itemdetail.name)[0].itemcount++;
     const totalprice = this.addeditemlst.filter(x => x.name === itemdetail.name)[0].totalprice++;
     this.addeditemlst.filter(x => x.name === itemdetail.name)[0].totalprice = totalprice + itemdetail.price;
+    this.calculatePriceVat();
   }
 
   remove(itemdetail: any): void {
@@ -65,6 +70,7 @@ export class ProductsComponent implements OnInit {
       this.addeditemlst.filter(x => x.name === itemdetail.name)[0].itemcount--;
       const totalprice = this.addeditemlst.filter(x => x.name === itemdetail.name)[0].totalprice++;
       this.addeditemlst.filter(x => x.name === itemdetail.name)[0].totalprice = totalprice - itemdetail.price;
+      this.calculatePriceVat();
     }
   }
 
@@ -74,6 +80,7 @@ export class ProductsComponent implements OnInit {
       this.addeditemlst.filter(x => x.name === itemdetail.name)[0].itemcount++;
       const totalprice = this.addeditemlst.filter(x => x.name === itemdetail.name)[0].totalprice++;
       this.addeditemlst.filter(x => x.name === itemdetail.name)[0].totalprice = totalprice + itemdetail.price;
+      this.calculatePriceVat();
       return;
     }
     const itemjson = {
@@ -87,9 +94,66 @@ export class ProductsComponent implements OnInit {
       'url': itemdetail.url
     }
     this.addeditemlst.push(itemjson);
+    this.calculatePriceVat();
+  }
+
+  calculatePriceVat(): void {
+    let subtotalprce = 0;
+    let addeditemcount = 0;
+    for (const row of this.addeditemlst) {
+      subtotalprce = subtotalprce + row.totalprice;
+      addeditemcount = addeditemcount + row.itemcount;
+    }
+
+    this.subtotallist.filter(x => x.title === 'SubTotal')[0].value = subtotalprce + ' EUR';
+    this.subtotallist.filter(x => x.title === 'SubTotal')[0].subtotal = addeditemcount + ' items';
+    this.subtotallist.filter(x => x.title === 'Total')[0].value = subtotalprce + ' EUR';
   }
 
   removeItem(itemdetail: any): void {
     this.addeditemlst = this.addeditemlst.filter(x => x.name !== itemdetail.name);
+  }
+
+  onProcessSale(): void {
+    this.recieptdialogRef = this.matDialog.open(RecieptpopupComponent, {
+      data: {
+        addeditemlst: this.addeditemlst
+      }
+    });
+    this.recieptdialogRef.afterClosed().subscribe(result => {
+      if (result === undefined) {
+        return;
+      }
+    });
+  }
+
+  cancelSale(): void {
+
+  }
+}
+
+@Component({
+  selector: 'app-reciept',
+  templateUrl: './recieptpopup.component.html',
+  styleUrls: ['./products.component.scss']
+})
+export class RecieptpopupComponent implements OnInit {
+  selecteditemlst: any[];
+
+  constructor(
+    public matDialogRef: MatDialogRef<RecieptpopupComponent>,
+    @Inject(MAT_DIALOG_DATA) private parentdata: any,
+  ) {
+    this.matDialogRef.disableClose = true;
+  }
+
+  ngOnInit(): void {
+    this.selecteditemlst = [];
+    this.matDialogRef.updateSize('25%', '70%');
+    this.selecteditemlst = this.parentdata.addeditemlst;
+    let slno = 0;
+    for (const row of this.selecteditemlst) {
+      row.slno = slno++;
+    }
   }
 }

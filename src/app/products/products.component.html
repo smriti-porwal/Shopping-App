@@ -32,8 +32,8 @@
         </tr>
       </table>
       <div fxLayout="row" fxLayoutAlign="space-between start">
-        <button class="button h_button" style="background-color: #FF0000">CANCEL SALE</button>
-        <button class="button h_button" style="background-color: #4CAF50">PROCCESS SALE</button>
+        <button class="button h_button" style="background-color: #FF0000" (click)="cancelSale()">CANCEL SALE</button>
+        <button class="button h_button" style="background-color: #4CAF50" (click)="onProcessSale()">PROCCESS SALE</button>
       </div>
     </div>
     <div fxFlex="55" fxLayout="column" fxLayout.gt-xs="column">

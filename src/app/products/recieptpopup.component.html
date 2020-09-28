@@ -1,0 +1,23 @@
+<div mat-dialog-content>
+  <div fxLayout="row" fxLayoutAlign="space-between center" style="background-color: darkslategray">
+    <span class="h2" style="color: white;">Reciept</span>
+    <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+    Sale No ...00102
+    Date
+    <mat-card>
+      # Product Quantity SubTotal
+    </mat-card><br>
+      <ul style="margin: 0 0 2em 0; list-style-type: none; padding: 0; overflow: auto">
+        <li *ngFor="let itemdata of selecteditemlst">
+          <div fxLayoutAlign="space-between start">
+          <span fxFlex="4" style="text-align: left">{{ itemdata.slno }}</span>
+          <span fxFlex="30" style="text-align: left">{{ itemdata.name }}</span>
+          <span fxFlex="20" style="text-align: right">{{ itemdata.itemcount }}</span>
+          <span fxFlex="20" style="text-align: right">{{ itemdata.totalprice }}</span>
+        </div>
+        </li>
+      </ul>
+</div>
