@@ -112,6 +112,7 @@ export class ProductsComponent implements OnInit {
 
   removeItem(itemdetail: any): void {
     this.addeditemlst = this.addeditemlst.filter(x => x.name !== itemdetail.name);
+    this.calculatePriceVat();
   }
 
   onProcessSale(): void {
@@ -128,7 +129,7 @@ export class ProductsComponent implements OnInit {
   }
 
   cancelSale(): void {
-
+    this.ngOnInit();
   }
 }
 
